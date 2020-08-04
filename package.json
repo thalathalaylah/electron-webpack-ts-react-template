@@ -1,0 +1,10 @@
+{
+  "devDependencies": {
+    "electron": "^9.1.2",
+    "electron-webpack": "^2.8.2",
+    "webpack": "^4.44.1"
+  },
+  "dependencies": {
+    "source-map-support": "^0.5.19"
+  }
+}
