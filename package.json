@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "dev": "electron-webpack dev"
+  },
   "devDependencies": {
     "electron": "^9.1.2",
     "electron-webpack": "^2.8.2",
