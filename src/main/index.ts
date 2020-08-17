@@ -3,23 +3,28 @@
 import { app, BrowserWindow } from 'electron';
 import * as path from 'path';
 import { format as formatUrl } from 'url';
+import installExtension, {
+  REACT_DEVELOPER_TOOLS,
+} from 'electron-devtools-installer';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 // global reference to mainWindow (necessary to prevent window from being garbage collected)
 let mainWindow: BrowserWindow | null;
 
-function createMainWindow() {
+const createMainWindow = () => {
   const window = new BrowserWindow({
     webPreferences: { nodeIntegration: true },
+    height: 1080,
+    width: 1920,
   });
 
   if (isDevelopment) {
-    window.webContents.openDevTools();
-  }
-
-  if (isDevelopment) {
+    installExtension([REACT_DEVELOPER_TOOLS])
+      .then((name: string) => console.log(name))
+      .catch((err: any) => console.log(err));
     window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`);
+    window.webContents.openDevTools();
   } else {
     window.loadURL(
       formatUrl({
@@ -42,7 +47,7 @@ function createMainWindow() {
   });
 
   return window;
-}
+};
 
 // quit application when all windows are closed
 app.on('window-all-closed', () => {
