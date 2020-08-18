@@ -14,7 +14,7 @@ let mainWindow: BrowserWindow | null;
 
 const createMainWindow = () => {
   const window = new BrowserWindow({
-    webPreferences: { nodeIntegration: true },
+    webPreferences: { nodeIntegration: true, enableRemoteModule: true },
     height: 1080,
     width: 1920,
   });
