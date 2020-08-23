@@ -3,16 +3,13 @@
 import { app, BrowserWindow } from 'electron';
 import * as path from 'path';
 import { format as formatUrl } from 'url';
-import installExtension, {
-  REACT_DEVELOPER_TOOLS,
-} from 'electron-devtools-installer';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 // global reference to mainWindow (necessary to prevent window from being garbage collected)
 let mainWindow: BrowserWindow | null;
 
-const createMainWindow = () => {
+const createMainWindow = async () => {
   const window = new BrowserWindow({
     webPreferences: { nodeIntegration: true, enableRemoteModule: true },
     height: 1080,
@@ -20,9 +17,12 @@ const createMainWindow = () => {
   });
 
   if (isDevelopment) {
-    installExtension([REACT_DEVELOPER_TOOLS])
-      .then((name: string) => console.log(name))
-      .catch((err: any) => console.log(err));
+    await import('electron-devtools-installer').then((module) => {
+      module
+        .default([module.REACT_DEVELOPER_TOOLS])
+        .then((name: string) => console.log(name))
+        .catch((err: any) => console.log(err));
+    });
     window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`);
     window.webContents.openDevTools();
   } else {
@@ -60,11 +60,15 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
   // on macOS it is common to re-create a window even after all windows have been closed
   if (mainWindow === null) {
-    mainWindow = createMainWindow();
+    createMainWindow().then((window) => {
+      mainWindow = window;
+    });
   }
 });
 
 // create main BrowserWindow when electron is ready
 app.on('ready', () => {
-  mainWindow = createMainWindow();
+  createMainWindow().then((window) => {
+    mainWindow = window;
+  });
 });

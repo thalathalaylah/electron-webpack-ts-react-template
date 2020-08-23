@@ -7,7 +7,7 @@ import path from 'path';
 
 const remote: Remote = window.require('electron').remote;
 
-const testDir = path.join(remote.app.getAppPath(), 'test/');
+const testDir = path.join(remote.app.getAppPath().slice(0, -8), 'test/');
 
 function createFile() {
   const filename = uuidv4() + '.txt';
