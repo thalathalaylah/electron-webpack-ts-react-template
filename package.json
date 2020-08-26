@@ -1,7 +1,10 @@
 {
   "scripts": {
-    "dev": "electron-webpack dev"
+    "dev": "electron-webpack dev",
+    "build": "electron-webpack && electron-builder --mac --x64"
   },
+  "name": "electron-webpack-ts-react-template",
+  "version": "10.0.0",
   "devDependencies": {
     "@babel/preset-react": "^7.10.4",
     "@types/electron-devtools-installer": "^2.2.0",
@@ -9,6 +12,7 @@
     "@types/react": "^16.9.47",
     "@types/react-dom": "^16.9.8",
     "electron": "^10.0.0",
+    "electron-builder": "^22.8.0",
     "electron-devtools-installer": "^3.1.1",
     "electron-webpack": "^2.8.2",
     "electron-webpack-ts": "^4.0.1",
