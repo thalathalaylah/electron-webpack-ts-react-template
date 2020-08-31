@@ -15,15 +15,17 @@ function createMainWindow() {
   });
 
   if (isDevelopment) {
-    window.webContents.openDevTools();
-  }
-
-  if (isDevelopment) {
     import('electron-devtools-installer').then((module) => {
       module
         .default(module.REACT_DEVELOPER_TOOLS)
         .then((name) => console.log(`Added Extension: ${name}`))
         .catch((err) => console.log('An error occurred: ', err));
+    });
+    window.webContents.on('did-frame-finish-load', () => {
+      window.webContents.once('devtools-opened', () => {
+        window.focus();
+      });
+      window.webContents.openDevTools();
     });
     window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`);
   } else {
